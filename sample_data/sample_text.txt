@@ -1,0 +1,19 @@
+Project Team Contact Directory & Inquiries:
+--------------------------------------------------
+Welcome to the Python Automation Project! For any inquiries, reach out to the project leads:
+1. Primary Developer: alex.chen@example.com (Office Hours: 9 AM - 5 PM)
+2. Support Team Lead: SUPPORT-TEAM@service-hub.org
+3. Project Manager: sarah_connor99@tech-solutions.co.uk.
+4. Duplicate check: alex.chen@example.com should be deduplicated properly!
+
+General company contacts:
+- General queries: info@samplecompany.net,
+- Human Resources: hr.recruitment@careers-portal.com!
+- Billing and Accounts: billing_dept@finance.io;
+- Feedback box: feedback@service-hub.org (Mon-Fri)
+
+Invalid email strings that regex should ignore:
+- plain text words: contact@ and @missingusername.com
+- invalid symbols: user@@doubleat.com or user@.missingdomain.org
+
+Thank you for testing the regex email extractor script!

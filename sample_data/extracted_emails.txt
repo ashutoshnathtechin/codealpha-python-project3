@@ -1,0 +1,18 @@
+============================================================
+ EXTRACTED EMAIL ADDRESSES REPORT
+============================================================
+Source File   : sample_text.txt
+Extracted On  : 2026-10-31 15:41:02
+Total Matches : 8
+Unique Emails : 7
+------------------------------------------------------------
+
+  1. alex.chen@example.com
+  2. billing_dept@finance.io
+  3. feedback@service-hub.org
+  4. hr.recruitment@careers-portal.com
+  5. info@samplecompany.net
+  6. sarah_connor99@tech-solutions.co.uk
+  7. support-team@service-hub.org
+
+============================================================

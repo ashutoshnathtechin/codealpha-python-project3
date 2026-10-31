@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Task Automation Dashboard</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        code, pre { font-family: 'JetBrains Mono', monospace; }
+        .gradient-header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <header class="gradient-header text-white shadow-lg border-b border-slate-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="bg-indigo-600 text-white p-2.5 rounded-xl shadow-md">
+                    <i class="fa-solid fa-robot text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-bold tracking-tight">Task Automation Dashboard</h1>
+                    <p class="text-xs text-slate-300">Python Project 3 &bull; os, shutil, re, requests, file handling</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-3">
+                <button onclick="resetData()" class="px-3.5 py-2 text-xs font-medium bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg transition border border-slate-600 flex items-center gap-1.5 shadow-sm">
+                    <i class="fa-solid fa-rotate text-indigo-400"></i> Reset Test Data
+                </button>
+                <button onclick="runAllTasks()" class="px-4 py-2 text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg transition shadow-md flex items-center gap-2">
+                    <i class="fa-solid fa-play"></i> Run All Tasks (Demo)
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+
+        <!-- Status Alert Banner -->
+        <div id="alertBanner" class="hidden mb-6 p-4 rounded-xl text-sm font-medium transition-all duration-300"></div>
+
+        <!-- 3 Tasks Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <!-- TASK 1: File Organizer -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between hover:shadow-md transition">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">
+                            Task 1 &bull; os, shutil
+                        </span>
+                        <i class="fa-solid fa-images text-amber-500 text-lg"></i>
+                    </div>
+                    <h2 class="text-lg font-bold text-slate-900 mb-1">JPG File Organizer</h2>
+                    <p class="text-xs text-slate-500 mb-4">Moves all .jpg / .jpeg files to a destination folder, avoiding duplicates.</p>
+
+                    <div class="space-y-3 mb-4">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-600 mb-1">Source Folder</label>
+                            <input type="text" id="t1Source" value="sample_data/source_folder" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-slate-700 focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-600 mb-1">Destination Folder</label>
+                            <input type="text" id="t1Dest" value="sample_data/organized_jpgs" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-slate-700 focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="t1CopyOnly" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500">
+                            <label for="t1CopyOnly" class="text-xs text-slate-600">Copy only (do not move source files)</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <button onclick="runTask1()" id="btnTask1" class="w-full py-2.5 px-4 bg-amber-600 hover:bg-amber-700 text-white font-medium text-xs rounded-xl shadow-sm transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-folder-open"></i> Organize .JPG Files
+                    </button>
+                    <!-- Result Box -->
+                    <div id="t1Result" class="hidden mt-4 p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs"></div>
+                </div>
+            </div>
+
+            <!-- TASK 2: Email Extractor -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between hover:shadow-md transition">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                            Task 2 &bull; re, file handling
+                        </span>
+                        <i class="fa-solid fa-at text-emerald-500 text-lg"></i>
+                    </div>
+                    <h2 class="text-lg font-bold text-slate-900 mb-1">Email Extractor</h2>
+                    <p class="text-xs text-slate-500 mb-4">Extracts RFC-compliant emails from text, normalizes cases, and deduplicates.</p>
+
+                    <div class="space-y-3 mb-4">
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <label class="text-xs font-medium text-slate-600">Input Source</label>
+                                <button onclick="loadSampleText()" class="text-emerald-600 hover:text-emerald-700 text-[11px] font-semibold">Load Sample</button>
+                            </div>
+                            <textarea id="t2Content" rows="5" placeholder="Paste unstructured text containing emails here..." class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-slate-700 focus:ring-2 focus:ring-emerald-500 focus:outline-none"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <button onclick="runTask2()" id="btnTask2" class="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs rounded-xl shadow-sm transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-filter"></i> Extract Email Addresses
+                    </button>
+                    <!-- Result Box -->
+                    <div id="t2Result" class="hidden mt-4 p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs max-h-48 overflow-y-auto"></div>
+                </div>
+            </div>
+
+            <!-- TASK 3: Web Title Scraper -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between hover:shadow-md transition">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">
+                            Task 3 &bull; requests, re
+                        </span>
+                        <i class="fa-solid fa-globe text-blue-500 text-lg"></i>
+                    </div>
+                    <h2 class="text-lg font-bold text-slate-900 mb-1">Webpage Title Scraper</h2>
+                    <p class="text-xs text-slate-500 mb-4">Fetches HTML via requests or local file, and extracts title & metadata using regex.</p>
+
+                    <div class="space-y-3 mb-4">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-600 mb-1">Target Webpage URL or Local HTML</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="t3Url" value="https://en.wikipedia.org/wiki/Python_(programming_language)" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-slate-700 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                            </div>
+                            <div class="flex gap-2 mt-2">
+                                <button onclick="setTargetUrl('https://en.wikipedia.org/wiki/Python_(programming_language)')" class="text-[11px] bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded border border-slate-200 text-slate-600">Wikipedia</button>
+                                <button onclick="setTargetUrl('https://httpbin.org')" class="text-[11px] bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded border border-slate-200 text-slate-600">Httpbin</button>
+                                <button onclick="setTargetUrl('sample_data/sample_webpage.html')" class="text-[11px] bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded border border-slate-200 text-slate-600">Offline HTML</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <button onclick="runTask3()" id="btnTask3" class="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs rounded-xl shadow-sm transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-magnifying-glass"></i> Scrape Webpage Title
+                    </button>
+                    <!-- Result Box -->
+                    <div id="t3Result" class="hidden mt-4 p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Live Activity Log Section -->
+        <div class="mt-8 bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-terminal text-slate-500"></i>
+                    <h3 class="text-sm font-bold text-slate-800">System Activity & Automation Logs</h3>
+                </div>
+                <button onclick="clearLogs()" class="text-xs text-slate-400 hover:text-slate-600">Clear</button>
+            </div>
+            <div id="logConsole" class="bg-slate-900 text-slate-200 text-xs p-4 rounded-xl h-44 overflow-y-auto space-y-1 font-mono">
+                <div class="text-slate-500">System initialized. Ready to execute automated tasks on localhost.</div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500">
+        Python Project 3 &bull; Task Automation &bull; Runs on Localhost <code class="bg-slate-100 px-1 py-0.5 rounded text-indigo-600 font-semibold">http://127.0.0.1:5000</code>
+    </footer>
+
+    <!-- JavaScript Client -->
+    <script>
+        function log(msg, type = 'info') {
+            const consoleEl = document.getElementById('logConsole');
+            const time = new Date().toLocaleTimeString();
+            let color = 'text-slate-300';
+            let prefix = '[INFO]';
+
+            if (type === 'success') { color = 'text-emerald-400'; prefix = '[SUCCESS]'; }
+            if (type === 'error') { color = 'text-rose-400'; prefix = '[ERROR]'; }
+            if (type === 'warn') { color = 'text-amber-400'; prefix = '[WARN]'; }
+
+            const entry = document.createElement('div');
+            entry.className = `${color} leading-relaxed`;
+            entry.innerText = `${time} ${prefix} ${msg}`;
+            consoleEl.appendChild(entry);
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        function clearLogs() {
+            document.getElementById('logConsole').innerHTML = '<div class="text-slate-500">Logs cleared.</div>';
+        }
+
+        function showAlert(msg, isSuccess = true) {
+            const banner = document.getElementById('alertBanner');
+            banner.className = `mb-6 p-4 rounded-xl text-sm font-medium transition-all ${
+                isSuccess ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-rose-50 text-rose-800 border border-rose-200'
+            }`;
+            banner.innerHTML = `<i class="fa-solid ${isSuccess ? 'fa-circle-check text-emerald-500' : 'fa-circle-exclamation text-rose-500'} mr-2"></i> ${msg}`;
+            banner.classList.remove('hidden');
+            setTimeout(() => banner.classList.add('hidden'), 5000);
+        }
+
+        function setTargetUrl(url) {
+            document.getElementById('t3Url').value = url;
+        }
+
+        async function loadSampleText() {
+            try {
+                const res = await fetch('/api/sample-text');
+                const data = await res.json();
+                document.getElementById('t2Content').value = data.content;
+                log('Loaded sample text data into Task 2 input.', 'info');
+            } catch (err) {
+                log('Could not load sample text: ' + err, 'error');
+            }
+        }
+
+        async function runTask1() {
+            const btn = document.getElementById('btnTask1');
+            const resBox = document.getElementById('t1Result');
+            const source = document.getElementById('t1Source').value;
+            const dest = document.getElementById('t1Dest').value;
+            const copyOnly = document.getElementById('t1CopyOnly').checked;
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+            log(`Running Task 1: Moving JPGs from ${source} to ${dest}...`);
+
+            try {
+                const res = await fetch('/api/task1', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ source, dest, copy_only: copyOnly })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    resBox.classList.remove('hidden');
+                    resBox.innerHTML = `
+                        <div class="text-emerald-700 font-semibold mb-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-check-circle"></i> Completed Successfully
+                        </div>
+                        <div class="text-slate-600">Files Moved: <strong class="text-slate-800">${data.moved_count}</strong></div>
+                        <div class="text-slate-600">Skipped (Non-JPG): <strong>${data.skipped_count}</strong></div>
+                        <div class="text-slate-400 text-[10px] mt-1">Duration: ${data.elapsed_seconds.toFixed(3)}s</div>
+                    `;
+                    log(`Task 1: Processed ${data.moved_count} files successfully.`, 'success');
+                    showAlert(`Task 1: Successfully organized ${data.moved_count} image files.`);
+                } else {
+                    resBox.classList.remove('hidden');
+                    resBox.innerHTML = `<span class="text-rose-600 font-semibold">Error:</span> ${data.error}`;
+                    log(`Task 1 Error: ${data.error}`, 'error');
+                }
+            } catch (err) {
+                log(`Task 1 Failed: ${err}`, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-folder-open"></i> Organize .JPG Files';
+            }
+        }
+
+        async function runTask2() {
+            const btn = document.getElementById('btnTask2');
+            const resBox = document.getElementById('t2Result');
+            const content = document.getElementById('t2Content').value;
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Extracting...';
+            log('Running Task 2: Extracting email addresses with regex...');
+
+            try {
+                const res = await fetch('/api/task2', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    resBox.classList.remove('hidden');
+                    let listHtml = data.emails.map((email, idx) => `
+                        <div class="flex items-center justify-between py-1 border-b border-slate-100 last:border-0">
+                            <span class="text-slate-700 font-mono text-[11px]">${idx + 1}. ${email}</span>
+                            <button onclick="navigator.clipboard.writeText('${email}')" class="text-slate-400 hover:text-emerald-600 text-[10px]" title="Copy">
+                                <i class="fa-regular fa-copy"></i>
+                            </button>
+                        </div>
+                    `).join('');
+
+                    resBox.innerHTML = `
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-emerald-700 font-semibold">Found ${data.unique_count} Unique Email(s)</span>
+                            <span class="text-[10px] text-slate-400">Total raw: ${data.total_raw}</span>
+                        </div>
+                        <div class="space-y-0.5">${listHtml || '<div class="text-slate-400">No emails found.</div>'}</div>
+                    `;
+                    log(`Task 2: Extracted ${data.unique_count} unique emails.`, 'success');
+                    showAlert(`Task 2: Extracted ${data.unique_count} email addresses.`);
+                } else {
+                    resBox.classList.remove('hidden');
+                    resBox.innerHTML = `<span class="text-rose-600 font-semibold">Error:</span> ${data.error}`;
+                    log(`Task 2 Error: ${data.error}`, 'error');
+                }
+            } catch (err) {
+                log(`Task 2 Failed: ${err}`, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-filter"></i> Extract Email Addresses';
+            }
+        }
+
+        async function runTask3() {
+            const btn = document.getElementById('btnTask3');
+            const resBox = document.getElementById('t3Result');
+            const url = document.getElementById('t3Url').value;
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Fetching...';
+            log(`Running Task 3: Scraping title for ${url}...`);
+
+            try {
+                const res = await fetch('/api/task3', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    resBox.classList.remove('hidden');
+                    resBox.innerHTML = `
+                        <div class="text-blue-700 font-semibold mb-1 flex items-center justify-between">
+                            <span><i class="fa-solid fa-circle-check"></i> Scraped Title</span>
+                            <span class="text-[10px] bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded">${data.status || '200 OK'}</span>
+                        </div>
+                        <div class="text-slate-800 font-medium text-xs mb-1.5 p-2 bg-white rounded border border-slate-200">
+                            ${data.title}
+                        </div>
+                        ${data.meta_description && data.meta_description !== 'N/A' ? `
+                            <div class="text-[11px] text-slate-500">
+                                <strong>Description:</strong> ${data.meta_description}
+                            </div>
+                        ` : ''}
+                        <div class="text-slate-400 text-[10px] mt-1.5">Saved report to: ${data.output_file}</div>
+                    `;
+                    log(`Task 3 Title: "${data.title}"`, 'success');
+                    showAlert('Task 3: Successfully scraped webpage title!');
+                } else {
+                    resBox.classList.remove('hidden');
+                    resBox.innerHTML = `<span class="text-rose-600 font-semibold">Error:</span> ${data.error}`;
+                    log(`Task 3 Error: ${data.error}`, 'error');
+                }
+            } catch (err) {
+                log(`Task 3 Failed: ${err}`, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i> Scrape Webpage Title';
+            }
+        }
+
+        async function runAllTasks() {
+            log('>>> Launching complete demonstration across all tasks...', 'info');
+            await resetData(false);
+            await runTask1();
+            await loadSampleText();
+            await runTask2();
+            await runTask3();
+            log('>>> Completed all 3 automation tasks successfully!', 'success');
+            showAlert('Full Automation Demo Complete! All 3 tasks executed.', true);
+        }
+
+        async function resetData(notify = true) {
+            try {
+                const res = await fetch('/api/reset-data', { method: 'POST' });
+                const data = await res.json();
+                if (notify) {
+                    log('Sample test environment reset with fresh dummy files.', 'info');
+                    showAlert('Sample test data reset successfully.');
+                }
+            } catch (err) {
+                log('Failed to reset sample data: ' + err, 'error');
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            loadSampleText();
+            log('Connected to Python Task Automation Backend.');
+        });
+    </script>
+</body>
+</html>

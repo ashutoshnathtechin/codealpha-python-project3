@@ -1,0 +1,12 @@
+============================================================
+ WEBPAGE TITLE SCRAPING REPORT
+============================================================
+Scraped On       : 2026-10-31 15:41:02
+Target           : sample_data/sample_webpage.html
+Status           : Local File (200 OK)
+Content Size     : 402 bytes
+Execution Time   : 0.021 seconds
+------------------------------------------------------------
+SCRAPED TITLE    : Python Task Automation - Official Project Hub
+META DESCRIPTION : A demonstration webpage for Python task automation and title scraping.
+============================================================
